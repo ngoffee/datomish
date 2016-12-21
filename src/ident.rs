@@ -8,35 +8,12 @@
 // CONDITIONS OF ANY KIND, either express or implied. See the License for the
 // specific language governing permissions and limitations under the License.
 
-extern crate datomish_query_parser;
+use keyword::Keyword;
 
-pub mod keyword;
-pub mod ident;
+pub type EntId = u32;            // TODO: u64? Not all DB values will be representable in a u32.
 
-pub fn get_name() -> String {
-  return String::from("datomish");
-}
-
-// Just an example of using a dependency
-pub fn get_parser_name() -> String {
-  return datomish_query_parser::get_name();
-}
-
-pub fn add_two(a: i32) -> i32 {
-    a + 2
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        assert_eq!(4, add_two(2));
-    }
-
-    #[test]
-    fn can_import_parser() {
-        assert_eq!(String::from("datomish-query-parser"), get_parser_name());
-    }
+/// The ability to transform entity identifiers (entids) into keyword names (idents) and back again.
+pub trait Ident {
+    fn ident(&self, entid: EntId) -> Option<Keyword>;
+    fn entid(&self, ident: &Keyword) -> Option<EntId>;
 }
